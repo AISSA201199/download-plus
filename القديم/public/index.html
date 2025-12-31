@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل بلس | Video Downloader Pro</title>
+    <meta name="description" content="قم بتنزيل مقاطع الفيديو المفضلة لديك بسرعة فائقة من يوتيوب وفيسبوك وانستغرام">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Confetti Container -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <!-- Notifications Container -->
+    <div id="notifications" class="notifications-container"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <span class="logo-icon">⬇️</span>
+                <div class="logo-text">
+                    <h1>تحميل بلس <span class="ultra-badge">PRO</span></h1>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" class="icon-btn" title="تبديل الوضع">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button id="langToggle" class="icon-btn" title="اللغة">🌐</button>
+                <button id="settingsBtn" class="icon-btn" title="الإعدادات">⚙️</button>
+                <button id="statsBtn" class="icon-btn" title="الإحصائيات">📊</button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="download">الرئيسية</button>
+            <button class="tab-btn" data-tab="search">🔍 بحث</button>
+            <button class="tab-btn" data-tab="queue">تنزيلاتي</button>
+            <button class="tab-btn" data-tab="cloud">السحابة</button>
+            <button class="tab-btn" data-tab="ai">مساعد الذكاء الاصطناعي</button>
+            <button class="tab-btn" data-tab="extract">أدوات الاستخراج</button>
+            <button class="tab-btn" data-tab="trending">الرائج</button>
+            <button class="tab-btn" data-tab="playlist">قوائم التشغيل</button>
+            <button class="tab-btn" data-tab="history">السجل</button>
+        </nav>
+    </header>
+
+    <div class="app-container">
+        <main class="main-content">
+
+            <!-- ========== Home / Download Tab ========== -->
+            <section id="downloadTab" class="tab-content active">
+                <div class="home-container">
+                    <!-- Hero Section -->
+                    <div class="home-hero">
+                        <div class="hero-text">
+                            <h2>قم بتنزيل مقاطع الفيديو المفضلة لديك بسرعة فائقة</h2>
+                            <p>يدعم يوتيوب، فيسبوك، انستغرام والمزيد. استخدم ميزات التحميل السحابي ومساعد الـ AI لتحسين
+                                تجربتك.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="search-form-container">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="videoUrl" placeholder="الصق رابط الفيديو هنا..." autocomplete="off">
+                            <button id="fetchBtn" class="btn-search-action">تنزيل</button>
+                        </div>
+                    </div>
+
+                    <!-- Features Links -->
+                    <div class="features-quick-links">
+                        <span class="feature-link"><i class="icon">☁️</i> تحميل سحابي مباشر</span>
+                        <span class="feature-link"><i class="icon">✨</i> تحسين الجودة بالذكاء الاصطناعي</span>
+                    </div>
+                </div>
+
+                <!-- Video Info Section -->
+                <div id="videoInfo" class="video-info hidden">
+                    <div class="video-preview">
+                        <img id="thumbnail" src="" alt="صورة الفيديو">
+                        <div class="duration-badge" id="duration"></div>
+                        <button id="previewBtn" class="preview-play-btn" title="معاينة">▶️</button>
+                        <button id="downloadThumbBtn" class="download-thumb-btn" title="تحميل الصورة">📷</button>
+                        <button id="makeGifBtn" class="make-gif-btn" title="تحويل لـ GIF">🎞️</button>
+                    </div>
+                    <div class="video-details">
+                        <h3 id="videoTitle"></h3>
+                        <div class="video-meta">
+                            <span id="channelName">📺 </span>
+                            <span id="viewCount">👁️ </span>
+                            <span id="uploadDate">📅 </span>
+                            <span id="likeCount">👍 </span>
+                        </div>
+                        <div class="video-stats">
+                            <span id="estimatedSize" class="stat-badge">💾 --</span>
+                            <span id="videoQualityBadge" class="stat-badge quality-badge">🎬 --</span>
+                            <span id="hasSubsBadge" class="stat-badge hidden">📝 ترجمات</span>
+                            <span id="isLiveBadge" class="stat-badge hidden">🔴 بث مباشر</span>
+                        </div>
+                        <button class="quick-btn" onclick="shareVideo()">🔗 مشاركة</button>
+                    </div>
+                </div>
+
+                <!-- Download Options Section -->
+                <div id="downloadOptions" class="download-options hidden">
+                    <div class="options-header">
+                        <h2>⚙️ خيارات التحميل</h2>
+                        <div class="options-tabs">
+                            <button class="option-tab active" data-option="video">🎬 فيديو</button>
+                            <button class="option-tab" data-option="audio">🎵 صوت</button>
+                            <button class="option-tab" data-option="gif">🎞️ GIF</button>
+                            <button class="option-tab" data-option="frames">🖼️ صور</button>
+                        </div>
+                    </div>
+
+                    <!-- Video Options -->
+                    <div id="videoOptions" class="option-panel active">
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label>🎬 الجودة</label>
+                                <select id="quality"></select>
+                            </div>
+                            <div class="option-group">
+                                <label>📦 الصيغة</label>
+                                <select id="formatSelect">
+                                    <option value="mp4">MP4 (الأفضل)</option>
+                                    <option value="mkv">MKV</option>
+                                    <option value="webm">WebM</option>
+                                    <option value="avi">AVI</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label>📁 المجلد</label>
+                                <input type="text" id="outputPath" placeholder="المجلد الافتراضي">
+                            </div>
+                            <div class="option-group">
+                                <label>📝 اسم الملف</label>
+                                <input type="text" id="filename" placeholder="اسم تلقائي">
+                            </div>
+                        </div>
+
+                        <!-- Advanced Options -->
+                        <div class="advanced-section">
+                            <button class="toggle-advanced" onclick="toggleAdvanced('video')">
+                                خيارات متقدمة ▼
+                            </button>
+                            <div id="advancedVideo" class="advanced-options hidden">
+                                <div class="option-row">
+                                    <label>⏱️ قص الفيديو</label>
+                                    <div class="time-inputs">
+                                        <input type="text" id="startTime" placeholder="0:00">
+                                        <span>➜</span>
+                                        <input type="text" id="endTime" placeholder="نهاية">
+                                    </div>
+                                </div>
+                                <div class="option-row">
+                                    <label>⚡ سرعة الفيديو</label>
+                                    <div class="speed-control">
+                                        <input type="range" id="videoSpeed" min="0.25" max="4" step="0.25" value="1">
+                                        <span id="speedValue">1x</span>
+                                    </div>
+                                </div>
+                                <div class="checkbox-row">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="downloadSubs">
+                                        <span>📝 تحميل الترجمات</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="embedMetadata" checked>
+                                        <span>البيانات الوصفية</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Options -->
+                    <div id="audioOptions" class="option-panel hidden">
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label>🎵 صيغة الصوت</label>
+                                <select id="audioFormat">
+                                    <option value="mp3">MP3</option>
+                                    <option value="aac">AAC</option>
+                                    <option value="flac">FLAC (عالي الجودة)</option>
+                                    <option value="wav">WAV</option>
+                                    <option value="m4a">M4A</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label>🎚️ جودة الصوت</label>
+                                <select id="audioBitrate">
+                                    <option value="320">320 kbps (عالي)</option>
+                                    <option value="256">256 kbps</option>
+                                    <option value="192">192 kbps</option>
+                                    <option value="128">128 kbps</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GIF Options -->
+                    <div id="gifOptions" class="option-panel hidden">
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label>⏱️ من (ثانية)</label>
+                                <input type="number" id="gifStart" value="0" min="0">
+                            </div>
+                            <div class="option-group">
+                                <label>⏱️ المدة (ثانية)</label>
+                                <input type="number" id="gifDuration" value="5" min="1" max="30">
+                            </div>
+                            <div class="option-group">
+                                <label>📐 العرض (بكسل)</label>
+                                <input type="number" id="gifWidth" value="480" min="100" max="1920">
+                            </div>
+                            <div class="option-group">
+                                <label>🎞️ FPS</label>
+                                <select id="gifFps">
+                                    <option value="10">10 (صغير الحجم)</option>
+                                    <option value="15" selected>15 (متوازن)</option>
+                                    <option value="24">24 (سينمائي)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frames Options -->
+                    <div id="framesOptions" class="option-panel hidden">
+                        <div class="options-grid">
+                            <div class="option-group">
+                                <label>🎯 نوع الاستخراج</label>
+                                <select id="framesType">
+                                    <option value="interval">كل X ثانية</option>
+                                    <option value="count">عدد محدد</option>
+                                    <option value="keyframes">الإطارات الرئيسية</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label>🔢 الفاصل/العدد</label>
+                                <input type="number" id="framesValue" value="5" min="1">
+                            </div>
+                            <div class="option-group">
+                                <label>📦 صيغة الصور</label>
+                                <select id="framesFormat">
+                                    <option value="jpg">JPG</option>
+                                    <option value="png">PNG</option>
+                                    <option value="webp">WebP</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Download Button -->
+                    <div class="download-buttons">
+                        <button id="downloadBtn" class="btn-download">
+                            <span class="btn-icon">⬇️</span>
+                            <span class="btn-text">تحميل</span>
+                        </button>
+                        <button id="addToQueueBtn" class="btn btn-secondary">➕ إضافة للطابور</button>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="progressSection" class="progress-section hidden">
+                    <div class="progress-header">
+                        <h2>📊 حالة التحميل</h2>
+                        <div class="progress-actions">
+                            <button id="pauseDownload" class="action-btn" title="إيقاف مؤقت">⏸️</button>
+                            <button id="resumeDownload" class="action-btn hidden" title="استئناف">▶️</button>
+                            <button id="cancelDownload" class="action-btn danger" title="إلغاء">✕</button>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progressPercent">0%</span>
+                            <span id="progressSpeed">--</span>
+                            <span id="progressEta">--</span>
+                            <span id="progressSize">--</span>
+                        </div>
+                    </div>
+                    <div id="progressStatus" class="progress-status">جاري التحضير...</div>
+                </div>
+
+                <!-- Success Section -->
+                <div id="successSection" class="success-section hidden">
+                    <div class="success-animation">
+                        <div class="success-icon">✅</div>
+                    </div>
+                    <h2>تم التحميل بنجاح!</h2>
+                    <p id="downloadedFilePath">تم حفظ الملف</p>
+                    <div class="success-stats">
+                        <span class="success-stat">📦 <span id="finalSize">--</span></span>
+                        <span class="success-stat">⏱️ <span id="downloadTime">--</span></span>
+                    </div>
+                    <div class="success-actions">
+                        <button id="openFolderBtn" class="btn btn-secondary">📂 فتح المجلد</button>
+                        <button id="playFileBtn" class="btn btn-secondary">▶️ تشغيل</button>
+                        <button id="newDownloadBtn" class="btn btn-primary">⬇️ تحميل آخر</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== Search Tab ========== -->
+            <section id="searchTab" class="tab-content hidden">
+                <div class="cloud-header-section">
+                    <h2>🔍 البحث في يوتيوب</h2>
+                    <p>ابحث عن الفيديوهات وقم بتحميلها أو إضافتها للطابور مباشرة</p>
+                </div>
+
+                <!-- Search Input -->
+                <div class="search-form-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchQuery" placeholder="ابحث عن فيديو في يوتيوب...">
+                        <button id="searchBtn" class="btn-search-action">🔍 بحث</button>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div id="searchResults" class="cloud-grid" style="margin-top: 30px;">
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <span style="font-size: 3rem;">🔍</span>
+                        <p>اكتب كلمة البحث واضغط بحث</p>
+                        <small>سيتم عرض نتائج البحث هنا</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== Queue / Downloads Tab ========== -->
+            <section id="queueTab" class="tab-content hidden">
+                <div class="cloud-header-section">
+                    <h2>📥 قائمة الانتظار</h2>
+                    <p>إدارة التنزيلات - تحميل دفعة واحدة أو واحد تلو الآخر</p>
+                </div>
+
+                <!-- Download Mode Selection -->
+                <div class="card" style="max-width: 800px; margin: 0 auto 20px; padding: 20px;">
+                    <h3 style="margin-bottom: 16px; font-size: 1.1rem;">⚡ وضع التحميل</h3>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <label class="radio-card" style="flex: 1; min-width: 200px;">
+                            <input type="radio" name="downloadMode" value="turbo" checked>
+                            <div class="radio-card-content">
+                                <span style="font-size: 1.5rem;">🚀</span>
+                                <strong>تحميل سريع (Turbo)</strong>
+                                <small>تحميل 10+ فيديوهات معاً بسرعة خرافية</small>
+                            </div>
+                        </label>
+                        <label class="radio-card" style="flex: 1; min-width: 200px;">
+                            <input type="radio" name="downloadMode" value="sequential">
+                            <div class="radio-card-content">
+                                <span style="font-size: 1.5rem;">📋</span>
+                                <strong>تحميل متتابع</strong>
+                                <small>تحميل فيديو تلو الآخر بالترتيب</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Queue Actions -->
+                <div class="section-header-row" style="max-width: 800px; margin: 0 auto;">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" onclick="switchQueueView('active')">التنزيلات النشطة</button>
+                        <button class="btn btn-secondary" onclick="switchQueueView('completed')">مكتملة</button>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="startQueueBtn" class="btn btn-primary"
+                            style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                            🚀 بدء التحميل
+                        </button>
+                        <button id="pauseQueueBtn" class="btn btn-secondary">⏸️ إيقاف</button>
+                        <button id="clearQueueBtn" class="btn btn-outline danger">🗑️ مسح</button>
+                    </div>
+                </div>
+
+                <!-- Queue Progress -->
+                <div id="queueProgress" class="hidden" style="max-width: 800px; margin: 20px auto;">
+                    <div class="card" style="padding: 16px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span id="queueProgressText">جاري التحميل...</span>
+                            <span id="queueProgressPercent">0/0</span>
+                        </div>
+                        <div class="progress-bar-line">
+                            <div class="progress-fill-blue" id="queueProgressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue List -->
+                <div class="clean-queue-list" id="queueListMain" style="max-width: 800px; margin: 20px auto;">
+                    <div class="empty-state">
+                        <span style="font-size: 3rem;">📭</span>
+                        <p>الطابور فارغ حالياً</p>
+                        <small>أضف فيديوهات من البحث أو الصفحة الرئيسية</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== Cloud Tab ========== -->
+            <section id="cloudTab" class="tab-content hidden">
+                <div class="cloud-container">
+                    <div class="cloud-header-section">
+                        <h2>دمج التحميل السحابي</h2>
+                        <p>اربط سحابة Google Drive لحفظ الملفات مباشرة. يتطلب ذلك إعداد تطبيق خاص بك.</p>
+                    </div>
+
+                    <!-- Setup Screen (Default if not connected) -->
+                    <div id="driveSetupScreen" class="settings-card" style="max-width: 600px; margin: 0 auto;">
+                        <h3>🔒 ربط Google Drive (متقدم)</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">
+                            نظراً لسياسات جوجل، يجب عليك استخدام "مفاتيح المطور" الخاصة بك.
+                            <br>
+                            1. اذهب لـ <a href="https://console.cloud.google.com/" target="_blank">Google Console</a>
+                            وأنشئ مشروعاً.
+                            <br>
+                            2. فعل Google Drive API وأنشئ بيانات OAuth (Desktop App).
+                        </p>
+
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Client ID</label>
+                            <input type="text" id="gDriveClientId" class="input-modern"
+                                placeholder="xxxxx.apps.googleusercontent.com">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Client Secret</label>
+                            <input type="password" id="gDriveClientSecret" class="input-modern"
+                                placeholder="GOCSPX-xxxxx">
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="generateDriveAuthLink()">🔗 1. توليد رابط
+                                الصلاحية</button>
+                        </div>
+
+                        <div id="driveAuthCodeSection" class="hidden"
+                            style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                            <p style="font-size: 0.9rem;">بعد الموافقة، انسخ الكود الذي يظهر والصقه هنا:</p>
+                            <div class="form-group">
+                                <label>رمز المصادقة (Auth Code)</label>
+                                <input type="text" id="gDriveAuthCode" class="input-modern" placeholder="4/0A...">
+                            </div>
+                            <button class="btn btn-success" onclick="completeDriveSetup()"
+                                style="width: 100%; margin-top: 10px;">✅ 2. إتمام الربط</button>
+                        </div>
+                    </div>
+
+                    <!-- Connected Screen (Hidden by default) -->
+                    <div id="driveConnectedScreen" class="cloud-grid hidden">
+                        <!-- Google Drive -->
+                        <div class="cloud-card active">
+                            <div class="cloud-icon-wrapper">
+                                <span style="font-size: 2.5rem;">📁</span>
+                            </div>
+                            <h3>Google Drive</h3>
+                            <p class="connected-status">متصل بنجاح ✅</p>
+                            <div class="cloud-actions">
+                                <button class="btn btn-secondary btn-full">إعداد المجلد</button>
+                                <button class="btn btn-outline danger btn-full" onclick="disconnectDrive()">فصل
+                                    الحساب</button>
+                            </div>
+                        </div>
+
+                        <!-- Drive Settings -->
+                        <div class="settings-section" style="margin-top: 20px; text-align: right;">
+                            <h3>⚡ إعدادات السحابة</h3>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="autoUpload" class="checkbox-modern">
+                                <label for="autoUpload">رفع تلقائي للسحابة بعد التحميل</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="deleteAfterUpload" class="checkbox-modern">
+                                <label for="deleteAfterUpload">حذف الملف المحلي بعد الرفع (توفير المساحة)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== AI Assistant Tab ========== -->
+            <section id="aiTab" class="tab-content hidden">
+                <!-- AI Setup Screen -->
+                <div id="aiSetupScreen" class="ai-container"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                    <div class="settings-card" style="max-width: 500px; text-align: center; padding: 40px;">
+                        <span style="font-size: 4rem;">🧠</span>
+                        <h2>تفعيل الذكاء الاصطناعي</h2>
+                        <p style="color: #666; margin: 15px 0;">
+                            لاستخدام ميزات Gemini، يجب إدخال مفتاح API الخاص بك من Google AI Studio.
+                        </p>
+                        <div class="form-group" style="text-align: right; margin-bottom: 20px;">
+                            <label>Gemini API Key</label>
+                            <input type="password" id="geminiApiKeyInput" class="input-modern" placeholder="AIzaSy...">
+                            <small><a href="https://aistudio.google.com/app/apikey" target="_blank">احصل على المفتاح من
+                                    هنا</a></small>
+                        </div>
+                        <button class="btn btn-primary btn-lg" style="width: 100%;" onclick="saveAiKey()">حفظ وبدء
+                            المحادثة</button>
+                    </div>
+                </div>
+
+                <!-- Chat Interface (Hidden by default) -->
+                <div id="aiChatInterface" class="ai-container hidden">
+                    <div class="chat-header">
+                        <div class="chat-model-info">
+                            <span class="model-badge">Gemini Pro</span>
+                            <span class="status-dot online"></span>
+                        </div>
+                        <button class="btn-clear-chat" onclick="clearChat()">مسح المحادثة 🗑️</button>
+                        <button class="btn-icon" onclick="logoutAi()" title="تغيير المفتاح">🔑</button>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                أهلاً بك! أنا مساعدك الذكي. يمكنني مساعدتك في استخراج المعلومات من الفيديوهات، أو
+                                الإجابة على استفساراتك.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..."
+                            onkeypress="handleChatInput(event)">
+                        <button class="btn-send" onclick="sendMessage()">
+                            <span>إرسال</span>
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========== Extract Tab ========== -->
+            <section id="extractTab" class="tab-content hidden">
+                <div class="cloud-header-section">
+                    <h2>🛠️ أدوات الاستخراج المتقدمة</h2>
+                    <p>استخرج الصوت، الصور، الترجمات، والبيانات من أي فيديو</p>
+                </div>
+
+                <!-- URL Input for Extract -->
+                <div class="search-form-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="extractUrl" placeholder="الصق رابط الفيديو هنا للاستخراج...">
+                        <button id="analyzeVideoBtn" class="btn-search-action">تحليل</button>
+                    </div>
+                </div>
+
+                <!-- Video Preview (shows after analysis) -->
+                <div id="extractPreview" class="hidden" style="max-width: 800px; margin: 0 auto 30px;">
+                    <div class="card">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <img id="extractThumb" src="" alt=""
+                                style="width: 160px; height: 90px; border-radius: 8px; object-fit: cover; background: var(--bg-secondary);">
+                            <div style="flex: 1;">
+                                <h3 id="extractTitle" style="font-size: 1.1rem; margin-bottom: 8px;">عنوان الفيديو</h3>
+                                <p id="extractChannel" style="color: var(--text-secondary); font-size: 0.9rem;">📺 اسم
+                                    القناة</p>
+                                <p id="extractDuration" style="color: var(--text-muted); font-size: 0.85rem;">⏱️ المدة
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extraction Tools Grid -->
+                <div class="cloud-grid" style="max-width: 1000px; margin: 0 auto;">
+                    <!-- Audio Extraction -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">🎵</span>
+                        </div>
+                        <h3>استخراج الصوت</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">حوّل الفيديو
+                            إلى ملف صوتي MP3 أو M4A</p>
+                        <div style="margin-bottom: 12px;">
+                            <select id="extractAudioFormat" class="modern-select" style="width: 100%;">
+                                <option value="mp3">MP3 (الأكثر توافقاً)</option>
+                                <option value="m4a">M4A (جودة عالية)</option>
+                                <option value="flac">FLAC (بدون ضغط)</option>
+                                <option value="wav">WAV</option>
+                            </select>
+                        </div>
+                        <button onclick="extractAudio()" class="btn btn-primary btn-full">⬇️ تنزيل الصوت</button>
+                    </div>
+
+                    <!-- Video Trimming -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">✂️</span>
+                        </div>
+                        <h3>قص الفيديو</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">قم بقص جزء معين
+                            من الفيديو</p>
+                        <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.8rem; color: var(--text-muted);">بداية</label>
+                                <input type="text" id="trimStart" value="00:00" placeholder="0:00"
+                                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.8rem; color: var(--text-muted);">نهاية</label>
+                                <input type="text" id="trimEnd" value="" placeholder="نهاية"
+                                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                            </div>
+                        </div>
+                        <button onclick="trimVideo()" class="btn btn-primary btn-full">✂️ قص وتنزيل</button>
+                    </div>
+
+                    <!-- Thumbnail Download -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">🖼️</span>
+                        </div>
+                        <h3>الصورة المصغرة</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">تحميل صورة
+                            الفيديو بأعلى جودة</p>
+                        <div id="thumbnailPreview"
+                            style="background: var(--bg-secondary); height: 80px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <span style="color: var(--text-muted);">معاينة الصورة</span>
+                        </div>
+                        <button onclick="downloadThumbnailHQ()" class="btn btn-primary btn-full">⬇️ تحميل
+                            الصورة</button>
+                    </div>
+
+                    <!-- Subtitles -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">📝</span>
+                        </div>
+                        <h3>الترجمات</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">استخرج الترجمات
+                            المتاحة للفيديو</p>
+                        <div style="margin-bottom: 12px;">
+                            <select id="subtitleLang" class="modern-select" style="width: 100%;">
+                                <option value="ar">العربية</option>
+                                <option value="en">English</option>
+                                <option value="auto">تلقائية (Auto)</option>
+                            </select>
+                        </div>
+                        <button onclick="extractSubtitles()" class="btn btn-primary btn-full">⬇️ تحميل الترجمات</button>
+                    </div>
+
+                    <!-- Comments -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">💬</span>
+                        </div>
+                        <h3>التعليقات</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">استخرج أفضل
+                            التعليقات من الفيديو</p>
+                        <div style="margin-bottom: 12px;">
+                            <select id="commentsCount" class="modern-select" style="width: 100%;">
+                                <option value="50">50 تعليق</option>
+                                <option value="100">100 تعليق</option>
+                                <option value="200">200 تعليق</option>
+                            </select>
+                        </div>
+                        <button onclick="extractComments()" class="btn btn-primary btn-full">📥 استخراج
+                            التعليقات</button>
+                    </div>
+
+                    <!-- Metadata -->
+                    <div class="cloud-card">
+                        <div class="cloud-icon-wrapper">
+                            <span style="font-size: 2.5rem;">📊</span>
+                        </div>
+                        <h3>البيانات الوصفية</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">معلومات تفصيلية
+                            عن الفيديو</p>
+                        <button onclick="showMetadata()" class="btn btn-secondary btn-full"
+                            style="margin-bottom: 8px;">👁️ عرض
+                            البيانات</button>
+                        <button onclick="downloadMetadata()" class="btn btn-primary btn-full">⬇️ تصدير JSON</button>
+                    </div>
+                </div>
+
+                <!-- Extraction Results Modal -->
+                <div id="extractResults" class="card hidden" style="max-width: 800px; margin: 30px auto 0;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3 id="extractResultTitle">النتائج</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="copyExtractResults()" class="btn btn-secondary">📋 نسخ</button>
+                            <button onclick="downloadExtractResults()" class="btn btn-secondary">⬇️ تنزيل</button>
+                            <button onclick="closeExtractResults()" class="btn btn-secondary">✕</button>
+                        </div>
+                    </div>
+                    <pre id="extractResultContent"
+                        style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; max-height: 400px; overflow: auto; white-space: pre-wrap; font-size: 0.9rem;"></pre>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div id="extractProgress" class="hidden" style="max-width: 600px; margin: 30px auto 0;">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span id="extractProgressText">جاري الاستخراج...</span>
+                            <span id="extractProgressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar-line">
+                            <div id="extractProgressBar" class="progress-fill-blue" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== Trending Tab ========== -->
+            <section id="trendingTab" class="tab-content hidden">
+                <div class="cloud-header-section">
+                    <h2>🔥 الفيديوهات الرائجة</h2>
+                    <p>اكتشف ما يشاهده العالم اليوم في منطقتك</p>
+                </div>
+
+                <div class="search-form-container" style="max-width: 400px;">
+                    <select id="trendingRegion" class="modern-select" style="width: 100%; padding: 14px;">
+                        <option value="SA">السعودية 🇸🇦</option>
+                        <option value="EG">مصر 🇪🇬</option>
+                        <option value="AE">الإمارات 🇦🇪</option>
+                        <option value="MA">المغرب 🇲🇦</option>
+                        <option value="US">أمريكا 🇺🇸</option>
+                    </select>
+                    <button id="loadTrendingBtn" class="btn btn-primary mt-20" style="width: 100%;">🔄 تحديث
+                        القائمة</button>
+                </div>
+
+                <div id="trendingResults" class="cloud-grid" style="margin-top: 30px;">
+                    <div class="empty-state">
+                        <p>اضغط تحديث لعرض الفيديوهات</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== Playlist Tab ========== -->
+            <section id="playlistTab" class="tab-content hidden">
+                <div class="cloud-header-section">
+                    <h2>📂 قوائم التشغيل</h2>
+                    <p>تحميل قنوات كاملة أو قوائم تشغيل بضغطة زر</p>
+                </div>
+
+                <div class="search-form-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="playlistUrl"
+                            placeholder="رابط القائمة أو القناة (Playlist/Channel URL)...">
+                        <button id="fetchPlaylistBtn" class="btn-search-action">جلب</button>
+                    </div>
+                </div>
+
+                <div class="cloud-settings-section" style="max-width: 800px; margin: 0 auto 30px;">
+                    <h3>خيارات القائمة</h3>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;">
+                        <select id="playlistQuality" class="modern-select">
+                            <option value="best">أفضل جودة</option>
+                            <option value="1080">1080p</option>
+                            <option value="720">720p</option>
+                            <option value="audio">🎵 صوت فقط (MP3)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="playlistInfo" class="section-header-row hidden">
+                    <h3 id="playlistTitle">عنوان القائمة</h3>
+                    <span id="playlistStats" class="queue-meta">0 فيديو</span>
+                </div>
+
+                <div id="playlistVideos" class="clean-queue-list"></div>
+
+                <div class="hidden" id="playlistActions"
+                    style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+                    <button id="downloadPlaylistBtn" class="btn btn-primary">⬇️ تحميل المحدد</button>
+                    <button id="addPlaylistToQueue" class="btn btn-secondary">➕ إضافة للطابور</button>
+                </div>
+            </section>
+
+            <!-- ========== History Tab ========== -->
+            <section id="historyTab" class="tab-content hidden">
+                <div class="history-container">
+                    <div class="history-header">
+                        <h2>سجل التنزيلات</h2>
+                        <div class="history-filters">
+                            <div class="filter-group">
+                                <label>فلترة حسب:</label>
+                                <select id="historyFilter" class="modern-select">
+                                    <option value="all">الكل</option>
+                                    <option value="video">فيديو</option>
+                                    <option value="audio">صوت</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <input type="text" id="historySearch" placeholder="بحث في التنزيلات..."
+                                    class="filter-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clean-table-responsive">
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الملف</th>
+                                    <th>تاريخ التنزيل</th>
+                                    <th>الحجم</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr>
+                                    <td>
+                                        <div class="file-cell">
+                                            <span class="file-icon">🎥</span>
+                                            <span>طبيعة خلابة 4K.mp4</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-01-15</td>
+                                    <td>1.2 GB</td>
+                                    <td><span class="status-badge complete">✅ مكتمل</span></td>
+                                    <td>
+                                        <div class="actions-cell">
+                                            <a href="#" class="action-link">⬇️ إعادة التنزيل</a>
+                                            <a href="#" class="action-link">☁️ نقل للسحابة</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="file-cell">
+                                            <span class="file-icon">🎥</span>
+                                            <span>فيديو تعليمي بايثون.mov</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-01-10</td>
+                                    <td>450 MB</td>
+                                    <td><span class="status-badge deleted">❌ محذوف</span></td>
+                                    <td>
+                                        <div class="actions-cell">
+                                            <a href="#" class="action-link">🔄 استعادة</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="file-cell">
+                                            <span class="file-icon">🎥</span>
+                                            <span>مقطع مضحك.avi</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-01-05</td>
+                                    <td>120 MB</td>
+                                    <td><span class="status-badge cloud">☁️ مكتمل في السحابة</span></td>
+                                    <td>
+                                        <div class="actions-cell">
+                                            <a href="#" class="action-link">👁️ عرض</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="page-btn">◀</button>
+                            <span class="page-info">الصفحة 1 من 5</span>
+                            <button class="page-btn">▶</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 تحميل بلس. جميع الحقوق محفوظة.</p>
+            <p><a href="#">عن الخدمة</a> | <a href="#">سياسة الخصوصية</a> | <a href="#">شروط الاستخدام</a> | <a
+                    href="#">الدعم الفني</a></p>
+        </footer>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ الإعدادات</h2>
+                <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>📁 مجلد الحفظ الافتراضي</label>
+                    <input type="text" id="defaultPath" class="modern-select">
+                </div>
+                <div class="form-row">
+                    <label>🎬 الجودة الافتراضية</label>
+                    <select id="defaultQuality" class="modern-select">
+                        <option value="best">أفضل جودة</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="notifyOnComplete" checked>
+                        <span>إشعار عند اكتمال التحميل</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="soundOnComplete" checked>
+                        <span>صوت عند الاكتمال</span>
+                    </label>
+                </div>
+                <button id="saveSettingsBtn" class="btn btn-primary btn-full mt-20">💾 حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 الإحصائيات</h2>
+                <button class="modal-close" onclick="closeModal('statsModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="cloud-grid">
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--primary);">📥</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;" id="totalDownloads">0</div>
+                        <div style="color: var(--text-muted);">إجمالي التحميلات</div>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--primary);">📊</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;" id="totalSize">0 GB</div>
+                        <div style="color: var(--text-muted);">الحجم الكلي</div>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--primary);">📅</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;" id="todayDownloads">0</div>
+                        <div style="color: var(--text-muted);">تحميلات اليوم</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="keyboardModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⌨️ اختصارات لوحة المفاتيح</h2>
+                <button class="modal-close" onclick="closeModal('keyboardModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div
+                        style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 8px;">
+                        <span>لصق ومعالجة</span>
+                        <span
+                            style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px;">Ctrl
+                            + V</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 8px;">
+                        <span>بدء التحميل</span>
+                        <span
+                            style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px;">Ctrl
+                            + Enter</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 8px;">
+                        <span>إضافة للطابور</span>
+                        <span
+                            style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px;">Ctrl
+                            + Q</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 8px;">
+                        <span>الإعدادات</span>
+                        <span
+                            style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px;">Ctrl
+                            + S</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notifications" class="notifications"></div>
+
+    <!-- Drop Zone Overlay -->
+    <div id="dropZone" class="drop-zone hidden">
+        <div class="drop-content">
+            <span class="drop-icon">📥</span>
+            <p>اسحب الرابط هنا</p>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>▶️ معاينة الفيديو</h2>
+                <button class="modal-close" onclick="closeModal('previewModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="previewFrame" src="" allowfullscreen
+                    style="width: 100%; height: 400px; border: none; border-radius: 8px;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

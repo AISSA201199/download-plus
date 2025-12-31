@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الأزرار</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+
+        .test-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #1565c0;
+        }
+
+        input {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 400px;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        #log {
+            background: #1a1a2e;
+            color: #0f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .info {
+            color: #2196f3;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <h1>🧪 صفحة اختبار الأزرار</h1>
+
+    <div class="test-section">
+        <h2>1️⃣ اختبار الاتصال بالسيرفر</h2>
+        <button onclick="testServer()">اختبار السيرفر</button>
+        <button onclick="testAPI()">اختبار API</button>
+    </div>
+
+    <div class="test-section">
+        <h2>2️⃣ اختبار جلب معلومات الفيديو</h2>
+        <input type="text" id="testUrl" placeholder="الصق رابط YouTube هنا..."
+            value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+        <button onclick="testFetch()">جلب المعلومات</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3️⃣ سجل الاختبارات</h2>
+        <div id="log">يتم تسجيل النتائج هنا...\n</div>
+        <button onclick="clearLog()">مسح السجل</button>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+
+        function log(msg, type = 'info') {
+            const logEl = document.getElementById('log');
+            const time = new Date().toLocaleTimeString('ar-EG');
+            const colorClass = type === 'success' ? 'success' : type === 'error' ? 'error' : 'info';
+            logEl.innerHTML += `<span class="${colorClass}">[${time}] ${msg}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            log('تم مسح السجل');
+        }
+
+        async function testServer() {
+            log('🔄 جاري اختبار السيرفر...');
+            try {
+                const response = await fetch('http://localhost:3000/');
+                if (response.ok) {
+                    log('✅ السيرفر يعمل!', 'success');
+                } else {
+                    log('❌ السيرفر يرد لكن بحالة: ' + response.status, 'error');
+                }
+            } catch (error) {
+                log('❌ لا يمكن الوصول للسيرفر: ' + error.message, 'error');
+            }
+        }
+
+        async function testAPI() {
+            log('🔄 جاري اختبار API...');
+            try {
+                const response = await fetch(API_BASE + '/check');
+                const data = await response.json();
+                log('✅ API يعمل! yt-dlp: ' + (data.installed ? 'مثبت' : 'غير مثبت'), 'success');
+                log('   الإصدار: ' + (data.version || 'غير معروف'));
+            } catch (error) {
+                log('❌ خطأ في API: ' + error.message, 'error');
+            }
+        }
+
+        async function testFetch() {
+            const url = document.getElementById('testUrl').value;
+            if (!url) {
+                log('❌ أدخل رابط الفيديو أولاً', 'error');
+                return;
+            }
+
+            log('🔄 جاري جلب معلومات الفيديو...');
+            log('   الرابط: ' + url);
+
+            try {
+                const response = await fetch(API_BASE + '/info?url=' + encodeURIComponent(url));
+                log('   حالة الاستجابة: ' + response.status);
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    log('✅ تم جلب المعلومات بنجاح!', 'success');
+                    log('   العنوان: ' + data.title);
+                    log('   القناة: ' + data.channel);
+                    log('   المدة: ' + data.duration_string);
+                    log('   المشاهدات: ' + data.view_count);
+                } else {
+                    log('❌ فشل الجلب: ' + (data.error || 'خطأ غير معروف'), 'error');
+                }
+            } catch (error) {
+                log('❌ خطأ في الاتصال: ' + error.message, 'error');
+            }
+        }
+
+        // Auto-run tests on load
+        window.onload = function () {
+            log('🚀 صفحة الاختبار جاهزة!');
+            testServer();
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "youtube-downloader",
+  "version": "1.0.0",
+  "description": "موقع تحميل فيديوهات محلي باستخدام yt-dlp",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "chmod +x render-build.sh && ./render-build.sh"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "youtube",
+    "downloader",
+    "yt-dlp"
+  ],
+  "author": "عيسى",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
+    "archiver": "^6.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "p-queue": "^7.4.1",
+    "socket.io": "^4.8.3"
+  }
+}
