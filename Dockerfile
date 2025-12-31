@@ -1,12 +1,11 @@
 # Use Node.js 20 LTS with Alpine Linux
 FROM node:20-alpine
 
-# Install system dependencies
+# Install system dependencies (aria2 removed - banned on Railway)
 RUN apk add --no-cache \
     python3 \
     py3-pip \
     ffmpeg \
-    aria2 \
     bash \
     curl \
     git
